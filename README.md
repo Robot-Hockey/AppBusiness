@@ -1,94 +1,89 @@
 # AppBusiness
 
-No Raspbberry Pi a comunicação do leitor RFID RC522 é feita através da interface SPI (Serial Peripheral Interface). O SPI utiliza comunicação síncrona, full duplex, utilizando o modelo de comunicação mestre-escravo.
 
-Na imagem abaixo é possível observar quais são os pinos correspondentes ao SPI na GPIO do Raspberry Pi 3, eles estão destacados com a cor roxa.
+In Raspbberry Pi the communication of the `RC522 RFID` reader is made through the `Serial Peripheral Interface (SPI)` interface. The `SPI` uses full duplex synchronous communication using the master-slave communication model.
+
+In the image below you can see which pins correspond to the SPI on the Raspberry Pi 3 GPIO, they are highlighted in purple.
 
 ![](/images/raspberry_pi3_gpio-288x300.png)
 
 
-### Conexão módulo RFID com Raspberry Pi
-Na tabela abaixo está descrito o pino do módulo RFID e seu respectivo pino/GPIO. Siga o esquema de conexão mostrado na tabela para utilizar o RFID com Raspberry Pi 3. Atenção, a tensão do módulo é de 3.3 volts.
+### RFID Module Connection with Raspberry Pi
+The table below describes the `RFID module` pin and its associated pin / GPIO. Follow the wiring diagram shown in the table to use RFID with Raspberry Pi 3.
+> Attention, the module voltage is 3.3 volts.
 
 ![](/images/Tabela_Ligacao_RC522_RPi.png)
 
 
-### Preparando o ambiente
-Esse passo a passo é para o Raspbian `Jessie versão 2016-03-18` (download), versões após esta release estão com problemas na interface SPI, e versões do Wheezy não suportam Device Tree, usado no exemplo abaixo. Leia mais sobre Device Tree na documentação do Raspberry. Caso você deseje configurar outra versão do Raspbian siga o tutorial da documentação do SPI.
+### Preparing the environment
+This walkthrough is for Raspbian `Jessie version 2016-03-18` (download), versions after this release have problems with the SPI interface, and versions of Wheezy do not support Device Tree, used in the example below. Read more about Device Tree in the Raspberry documentation. If you want to configure another version of Raspbian follow the SPI documentation tutorial.
 
-O Raspbian vem com SPI desabilitado por padrão, para verificar se está ou não habilitado vamos executar o comando a seguir:
+Raspbian comes with SPI disabled by default, to check whether or not it is enabled we will execute the following command:
 
 ```bash
 ls /dev/spi*
 ```
 
-Se o resultado for o seguinte:
+If the result is as follows:
 ```bash
 ls: cannot access /dev/spi*: No such file or directory
 ```
 
-Nesse caso devemos habilitar o SPI.
-Para habilitar o SPI no Raspbian acesse o `Menu > Preferences > Raspberry Pi Configuration` e na aba Interface habilite `SPI`. Clique em OK.
+
+In this case we must enable the SPI.
+To enable SPI on Raspbian go to `Menu> Preferences> Raspberry Pi Configuration` and on the Interface tab enable` SPI`. Click on OK.
 
 
 ![](images/Habilitar_SPI.png)
 
-Em seguida, no seu editor de texto preferido abra o arquivo /boot/config.txt (como root) e adicione a seguinte linha:
+Then in your favorite text editor open the file /boot/config.txt (as root) and add the following line:
 
 ```bash
 dtoverlay=spi-bcm2708
 ```
 
-Reinicie o Raspbian e verifique novamente, o resultado deverá ser:
+Restart Raspbian and check again, the result should be:
 
 ```bash
 /dev/spidev0.0 /dev/spidev0.1
 ```
 
-Verifique se o módulo SPI foi carregado corretamente através do comando:
+Verify that the SPI module was loaded correctly by the command:
 
 ```bash
 dmesg | grep spi
 ```
 
-O resultado deverá ser algo semelhante ao abaixo, indicando a comunicação RFID com Raspberry Pi:
+The result should look something like the one below, indicating RFID communication with Raspberry Pi:
 
 ```bash
 [ 6.240564] bcm2708_spi 3f204000.spi: master is unqueued, this is deprecated
 [ 6.241262] bcm2708_spi 3f204000.spi: SPI Controller at 0x3f204000 (irq 80)
 ```
 
-Para utilizar o módulo RC522 no Python necessitamos instalar alguns componentes antes de começar a programar. Primeiramente iremos instalar o pacote python-dev através do comando:
+To use the RC522 module in Python we need to install some components before we can start programming. First we will install the python-dev package through the command:
 
 ```bash
 sudo apt-get install python-dev
 ```
 
-Após instalado iremos instalar o pacote Python para comunicação SPI, para isto execute os comandos abaixo:
+Once installed we will install the Python package for SPI communication, for this run the following commands:
 
 ```bash
 git clone https://github.com/Robot-Hockey/AppBusiness.git
 cd AppBusiness
 sudo python setup.py install
 ```
-### How to run
+### Running
 
 ```bash
 python main.py
 ```
 
-Ao aproximar uma tag `RFID` do módulo, caso o `UID` esteja na lista ADMIN_CARDS você verá uma mensagem semelhante a abaixo:
+When approaching a `RFID` tag from the module.
 
 ```bash
 Show your card RFID
 Card detected!
 UID do cartão: 4F:FD:2F:0:9D
-```
-
-Caso contrário será exibida uma mensagem semelhante a esta:
-
-```
-Show your card RFID
-Card detected!
-UID do cartão: 6B:4:FE:E5:74
 ```
