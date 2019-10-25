@@ -3,7 +3,9 @@
  
 import time
 import RPi.GPIO as GPIO
-import MFRC522
+from mfrc522 import SimpleMFRC522
+
+reader = SimpleMFRC522()
  
 # UID for card with free access.
 ADMIN_CARDS = {
