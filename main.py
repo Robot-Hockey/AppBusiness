@@ -1,48 +1,90 @@
 #!/usr/bin/env python
-# -*- coding: utf8 -*-
- 
-import time
+
 import RPi.GPIO as GPIO
+import requests
+import json
 from mfrc522 import SimpleMFRC522
+import time
+import os
+
+GPIO.setwarnings(False)
+GPIO.setmode(GPIO.BCM)
+GPIO.setup(17, GPIO.IN)
+GPIO.setup(18, GPIO.IN)
 
 reader = SimpleMFRC522()
- 
+
 # UID for card with free access.
 ADMIN_CARDS = {
     '3C:2F:4F:0:2D': 'Admin 1',
 }
- 
+
+#base_url = 'http://192.168.100.71:3000'
+base_url = 'https://hockey-api.lappis.rocks'
+
+def loginAPI():
+    #TODO remove hardcoded username and password
+    email = 'raspberry@email.com'
+    password = '123456'
+    obj = {'email': email, 'password': password}
+    url = base_url + '/login'
+    r = requests.post(url, data = obj)
+    print('Credential approved!')
+    json_obj = json.loads(r.text)
+    return json_obj['auth_token']
+
+def debitAPI(public_id):
+    obj = {'operation': {'value': -2, 'public_id': public_id[:-2] } }
+    url = base_url + '/operations'
+    header = {'Authorization': auth_token}
+    r = requests.post(url, json = obj, headers = header)
+    print(r.status_code, r.text)
+    if r.status_code == 201:
+        return True
+    else:
+        return False
+
+def game():
+    score_player = 0
+    score_robot = 0
+    game_max_score = 3
+    while(True):
+        input_goal_player = GPIO.input(17)
+        input_goal_robot = GPIO.input(18)
+        
+        os.system('clear')
+        print("Player: ", score_player)
+        print("Robot: ", score_robot)
+        
+        if score_player >= 3:
+            print("Player Wins")
+            break
+        
+        if score_robot >= 3:
+            print("Robot Wins")
+            break
+
+        if input_goal_player == 1:
+            score_player += 1
+        elif input_goal_robot == 1:
+            score_robot += 1
+        
+        time.sleep(.3)
+       
+
+auth_token = loginAPI()
+
 try:
-    # Init module RC522.
-    LeitorRFID = MFRC522.MFRC522()
- 
-    print('Show your card RFID')
- 
-    while True:
-        # Verify if there is one tag close to de module.
-        status, tag_type = LeitorRFID.MFRC522_Request(LeitorRFID.PICC_REQIDL)
- 
-        if status == LeitorRFID.MI_OK:
-            print('Card detected!')
- 
-            # Read Card UID.
-            status, uid = LeitorRFID.MFRC522_Anticoll()
- 
-            if status == LeitorRFID.MI_OK:
-                uid = ':'.join(['%X' % x for x in uid])
-                print('Card UID: %s' % uid)
- 
-                # If you are an admin the game starts automatically.
-                if uid in ADMIN_CARDS:
-                    # Is a system admin
-                else:
-                    # Not a system admin
- 
-                print('nShow your card RFID')
- 
-        time.sleep(.25)
+    while(True):
+        print('Show your card RFID')
+        id, text = reader.read()
+        print(hex(id))
+        result = debitAPI(hex(id))
+        if result:
+            game()
+        else:
+            print("Error")
 except KeyboardInterrupt:
-    # If the user press Ctrl + C
-    # exit the program.
-    GPIO.cleanup()
-    print('nExit.')
+    pass
+
+GPIO.cleanup()
