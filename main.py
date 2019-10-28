@@ -11,6 +11,12 @@ GPIO.setwarnings(False)
 GPIO.setmode(GPIO.BCM)
 GPIO.setup(17, GPIO.IN)
 GPIO.setup(18, GPIO.IN)
+GPIO.setup(6, GPIO.OUT)
+GPIO.setup(12, GPIO.OUT)
+
+GPIO.output(6, GPIO.LOW)
+GPIO.output(12, GPIO.LOW)
+
 
 reader = SimpleMFRC522()
 
@@ -44,6 +50,15 @@ def debitAPI(public_id):
     else:
         return False
 
+def sendScoreboardSignal(robot):
+    if(robot):
+        GPIO.output(6, GPIO.HIGH)
+        time.sleep(.5)
+        GPIO.output(6, GPIO.LOW)
+    else:
+        GPIO.output(12, GPIO.HIGH)
+        time.sleep(.5)
+        GPIO.output(12, GPIO.LOW)
 def game():
     score_player = 0
     score_robot = 0
@@ -66,8 +81,10 @@ def game():
 
         if input_goal_player == 1:
             score_player += 1
+            sendScoreboardSignal(False)
         elif input_goal_robot == 1:
             score_robot += 1
+            sendScoreboardSignal(True)
         
         time.sleep(.3)
        
