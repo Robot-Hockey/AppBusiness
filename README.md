@@ -12,8 +12,20 @@ In the image below you can see which pins correspond to the SPI on the Raspberry
 The table below describes the `RFID module` pin and its associated pin / GPIO. Follow the wiring diagram shown in the table to use RFID with Raspberry Pi 3.
 > Attention, the module voltage is 3.3 volts.
 
-![](/images/Tabela_Ligacao_RC522_RPi.png)
-
+| Pino RC522  | Pino Raspberry Pi  | GPIO Raspberry Pi  |
+|-------------|--------------------|--------------------|
+| SDA        | 24                 | GPIO8              |
+| SCK        | 23                 | GPIO11             |
+| MOSI       | 19                 | GPIO10             |
+| MISO       | 21                 | GPIO19             |
+| Goal in 1  | 11                 | GPIO17             |
+| Goal in 2  | 12                 | GPIO18             |
+| Goal out 1 | 31                 | GPIO06             |
+| Goal out 2 | 32                 | GPIO12             |
+| IRQ        | -                  | -                  |
+| GND        | 6                  | GND                |
+| RST        | 22                 | GPIO25             |
+| 3.3V       | 1                  | 3V3                |
 
 ### Preparing the environment
 This walkthrough is for Raspbian `Jessie version 2016-03-18` (download), versions after this release have problems with the SPI interface, and versions of Wheezy do not support Device Tree, used in the example below. Read more about Device Tree in the Raspberry documentation. If you want to configure another version of Raspbian follow the SPI documentation tutorial.
@@ -33,8 +45,8 @@ ls: cannot access /dev/spi*: No such file or directory
 In this case we must enable the SPI.
 To enable SPI on Raspbian go to `Menu> Preferences> Raspberry Pi Configuration` and on the Interface tab enable` SPI`. Click on OK.
 
-
 ![](images/Habilitar_SPI.png)
+
 
 Then in your favorite text editor open the file /boot/config.txt (as root) and add the following line:
 
