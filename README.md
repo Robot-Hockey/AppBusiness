@@ -20,6 +20,7 @@ The table below describes the `RFID module` pin and its associated pin / GPIO. F
 | MISO       | 21                 | GPIO19             |
 | Goal in 1  | 11                 | GPIO17             |
 | Goal in 2  | 12                 | GPIO18             |
+| Air        | 29                 | GPIO05             |
 | Goal out 1 | 31                 | GPIO06             |
 | Goal out 2 | 32                 | GPIO12             |
 | IRQ        | -                  | -                  |

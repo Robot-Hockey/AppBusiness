@@ -11,9 +11,11 @@ GPIO.setwarnings(False)
 GPIO.setmode(GPIO.BCM)
 GPIO.setup(17, GPIO.IN)
 GPIO.setup(18, GPIO.IN)
+GPIO.setup(5, GPIO.OUT)
 GPIO.setup(6, GPIO.OUT)
 GPIO.setup(12, GPIO.OUT)
 
+GPIO.output(5, GPIO.LOW)
 GPIO.output(6, GPIO.LOW)
 GPIO.output(12, GPIO.LOW)
 
@@ -63,6 +65,7 @@ def game():
     score_player = 0
     score_robot = 0
     game_max_score = 3
+    GPIO.output(5, GPIO.HIGH)
     while(True):
         input_goal_player = GPIO.input(17)
         input_goal_robot = GPIO.input(18)
@@ -73,10 +76,12 @@ def game():
         
         if score_player >= 3:
             print("Player Wins")
+            GPIO.output(5, GPIO.LOW)
             break
         
         if score_robot >= 3:
             print("Robot Wins")
+            GPIO.output(5, GPIO.LOW)
             break
 
         if input_goal_player == 1:
