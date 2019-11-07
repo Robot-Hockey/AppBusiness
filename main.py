@@ -30,7 +30,7 @@ ADMIN_CARDS = {
 #base_url = 'http://192.168.100.71:3000'
 base_url = 'https://hockey-api.lappis.rocks'
 
-def loginAPI():
+def login_api():
     #TODO remove hardcoded username and password
     email = 'raspberry@email.com'
     password = '123456'
@@ -41,7 +41,7 @@ def loginAPI():
     json_obj = json.loads(r.text)
     return json_obj['auth_token']
 
-def debitAPI(public_id):
+def debit_api(public_id):
     obj = {'operation': {'value': -2, 'public_id': public_id[:-2] } }
     url = base_url + '/operations'
     header = {'Authorization': auth_token}
@@ -52,7 +52,7 @@ def debitAPI(public_id):
     else:
         return False
 
-def sendScoreboardSignal(robot):
+def send_scoreboard_point(robot):
     if(robot):
         GPIO.output(6, GPIO.HIGH)
         time.sleep(.5)
@@ -86,22 +86,22 @@ def game():
 
         if input_goal_player == 1:
             score_player += 1
-            sendScoreboardSignal(False)
+            send_scoreboard_point(False)
         elif input_goal_robot == 1:
             score_robot += 1
-            sendScoreboardSignal(True)
+            send_scoreboard_point(True)
         
         time.sleep(.3)
        
 
-auth_token = loginAPI()
+auth_token = login_api()
 
 try:
     while(True):
         print('Show your card RFID')
         id, text = reader.read()
         print(hex(id))
-        result = debitAPI(hex(id))
+        result = debit_api(hex(id))
         if result:
             game()
         else:
