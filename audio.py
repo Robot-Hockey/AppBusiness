@@ -62,12 +62,11 @@ CHANNEL = 1
 class Audio():
 
     def __init__(self) -> object:
-        mixer.pre_init(44100, 16, 1, 4096)
+        # mixer.pre_init(44100, 16, 1, 4096)
         mixer.init()
         self.bg_sound = mixer.music.load('./sounds/'+ THEME_SOUNDS[0] + '.ogg')
 
     def play_background(self):  # Background music
-        # mixer.music.set_pos(35.0/1000.0)
         mixer.music.play(-1, 70.0)
     
     def fade_sound_controller(self):
