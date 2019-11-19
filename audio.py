@@ -59,11 +59,12 @@ VOLUME_LOW = 0.3
 VOLUME_HIGH = 1.0
 CHANNEL = 1
 
-class Audio():
+class Audio:
 
-    def __init__(self) -> object:
-        mixer.pre_init(44100, 16, 1, 4096)
-        mixer.init()
+    def __init__(self):
+        # mixer.pre_init(44100, 16, 1, 4096)
+        #mixer.init()
+        mixer.init(44100, -16, 1, 1024)
         self.bg_sound = mixer.music.load('./sounds/'+ THEME_SOUNDS[0] + '.ogg')
 
     def play_background(self):  # Background music
@@ -96,22 +97,19 @@ class Audio():
         mixer.Channel(CHANNEL).play(sound)
         self.fade_sound_controller()
 
-sound = Audio()
-sound.play_background()
+#sound = Audio()
+#sound.play_background()
 
-try:
-
-    while(True):
-        number = input("")
-        if(number == '1'):
-            sound.play_robot_point()
-        elif(number == '2'):
-            sound.play_player_point()
-        elif(number == '3'):
-            sound.play_on()
-        elif(number == '4'):
-            sound.play_off()
-
-
-except KeyboardInterrupt:
-    pass
+#try:
+#    while(True):
+#        number = input("")
+#        if(number == '1'):
+#            sound.play_robot_point()
+#        elif(number == '2'):
+#            sound.play_player_point()
+#        elif(number == '3'):
+#            sound.play_on()
+#        elif(number == '4'):
+#            sound.play_off()
+#except KeyboardInterrupt:
+#    pass

@@ -6,6 +6,7 @@ import json
 from mfrc522 import SimpleMFRC522
 import time
 import os
+from audio import Audio
 
 GPIO.setwarnings(False)
 GPIO.setmode(GPIO.BCM)
@@ -29,6 +30,8 @@ ADMIN_CARDS = {
 
 #base_url = 'http://192.168.100.71:3000'
 base_url = 'https://hockey-api.lappis.rocks'
+
+sound = Audio()
 
 def login_api():
     #TODO remove hardcoded username and password
@@ -61,11 +64,14 @@ def send_scoreboard_point(robot):
         GPIO.output(12, GPIO.HIGH)
         time.sleep(.5)
         GPIO.output(12, GPIO.LOW)
+
 def game():
     score_player = 0
     score_robot = 0
     game_max_score = 3
     GPIO.output(5, GPIO.LOW)
+    sound.play_background()
+
     while(True):
         input_goal_player = GPIO.input(17)
         input_goal_robot = GPIO.input(18)
@@ -86,9 +92,11 @@ def game():
 
         if input_goal_player == 1:
             score_player += 1
+            sound.play_player_point()
             send_scoreboard_point(False)
         elif input_goal_robot == 1:
             score_robot += 1
+            sound.play_robot_point()
             send_scoreboard_point(True)
         
         time.sleep(.3)
