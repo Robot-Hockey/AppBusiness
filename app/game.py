@@ -13,8 +13,8 @@ GPIO.setwarnings(False)
 GPIO.setmode(GPIO.BCM)
 
 # Goal Sensor
-GPIO.setup(17, GPIO.IN) # Goal sensor 1
-GPIO.setup(27, GPIO.IN) # Goal sensor 2
+GPIO.setup(26, GPIO.IN) # Goal sensor 1
+GPIO.setup(20, GPIO.IN) # Goal sensor 2
 
 # Reles
 GPIO.setup(23, GPIO.OUT) # Rele in 1
@@ -52,43 +52,43 @@ def game():
     score_player = 0
     score_robot = 0
     game_max_score = 3
-    GPIO.output(23, GPIO.LOW)
+    GPIO.output(23, GPIO.LOW) # Turn on air
     sound.play_background()
 
     while(True):
-        input_goal_player = GPIO.input(17)
-        input_goal_robot = GPIO.input(27)
-        
+        #input_goal_player = GPIO.input(26)
+        #input_goal_robot = GPIO.input(20)
+        #print(input_goal_player)
+        #print(input_goal_robot)
+        input_goal_player = 0
+        input_goal_robot = 0
+
         count = 0
         
-        #GPIO.setup(21, GPIO.OUT)
-        #GPIO.output(21, GPIO.LOW)
-        #time.sleep(0.01)
-        #GPIO.setup(21, GPIO.IN)
+        GPIO.setup(26, GPIO.OUT)
+        GPIO.output(26, GPIO.LOW)
+        time.sleep(0.01)
+        GPIO.setup(26, GPIO.IN)
 
-        #while (GPIO.input(21) == GPIO.LOW):
-        #    count += 1
+        while (GPIO.input(26) == GPIO.LOW):
+            count += 1
 
-        #print(count)
         
-        #if count >= 500:
-        #    input_goal_robot = 1
+        if count >= 10:
+            input_goal_robot = 1
         
         #TODO: Code robot player goal
 
         os.system('clear')
         
-        print("Player: ", score_player)
-        print("Robot: ", score_robot)
-     
         if score_player >= 3:
             print("Player Wins")
-            GPIO.output(23, GPIO.HIGH)
+            GPIO.output(23, GPIO.HIGH) # Turn off air
             break
         
         if score_robot >= 3:
             print("Robot Wins")
-            GPIO.output(23, GPIO.HIGH)
+            GPIO.output(23, GPIO.HIGH) # Turn off air
             break
 
         if input_goal_player == 1:
@@ -99,8 +99,14 @@ def game():
             score_robot += 1
             sound.play_robot_point()
             #send_scoreboard_point(True)
-
-        #time.sleep(.3)
+        
+        print("Player: ", score_player)
+        print("Robot: ", score_robot)
+        print(count) 
+     
+        """
+        time.sleep(.3)
+        """
 
 
 def main():
