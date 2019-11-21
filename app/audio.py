@@ -55,6 +55,8 @@ THEME_SOUNDS = [
     'chapeleiro-disco-voador-original'
 ]
 
+AUDIO_PATH = '../sounds/'
+
 VOLUME_LOW = 0.3
 VOLUME_HIGH = 1.0
 CHANNEL = 1
@@ -65,7 +67,7 @@ class Audio:
         # mixer.pre_init(44100, 16, 1, 4096)
         #mixer.init()
         mixer.init(44100, -16, 1, 1024)
-        self.bg_sound = mixer.music.load('./sounds/'+ THEME_SOUNDS[0] + '.ogg')
+        self.bg_sound = mixer.music.load(AUDIO_PATH + THEME_SOUNDS[0] + '.ogg')
 
     def play_background(self):  # Background music
         mixer.music.play(-1, 70.0)
@@ -77,38 +79,21 @@ class Audio:
         mixer.music.set_volume(VOLUME_HIGH)
 
     def play_robot_point(self): # Robot sound effects
-        sound = mixer.Sound('./sounds/'+ ROBOT_POINT_SOUNDS[random.randint(0, 15)] + '.ogg')
+        sound = mixer.Sound(AUDIO_PATH + ROBOT_POINT_SOUNDS[random.randint(0, 15)] + '.ogg')
         mixer.Channel(CHANNEL).play(sound)
         self.fade_sound_controller()
 
     def play_player_point(self): # Player sound effects
-        sound = mixer.Sound('./sounds/'+ PLAYER_POINT_SOUNDS[random.randint(0, 13)] + '.ogg')
+        sound = mixer.Sound(AUDIO_PATH + PLAYER_POINT_SOUNDS[random.randint(0, 13)] + '.ogg')
         mixer.Channel(CHANNEL).play(sound)
         self.fade_sound_controller()
 
     def play_on(self): # Table ON sound effects
-        sound = mixer.Sound('./sounds/'+ ON_SOUNDS[random.randint(0, 2)] + '.ogg')
+        sound = mixer.Sound(AUDIO_PATH + ON_SOUNDS[random.randint(0, 2)] + '.ogg')
         mixer.Channel(CHANNEL).play(sound)
         self.fade_sound_controller()
 
     def play_off(self): # Table OFF sound effects
-        sound = mixer.Sound('./sounds/'+ OFF_SOUNDS[random.randint(0, 3)] + '.ogg')
+        sound = mixer.Sound(AUDIO_PATH + OFF_SOUNDS[random.randint(0, 3)] + '.ogg')
         mixer.Channel(CHANNEL).play(sound)
         self.fade_sound_controller()
-
-#sound = Audio()
-#sound.play_background()
-
-#try:
-#    while(True):
-#        number = input("")
-#        if(number == '1'):
-#            sound.play_robot_point()
-#        elif(number == '2'):
-#            sound.play_player_point()
-#        elif(number == '3'):
-#            sound.play_on()
-#        elif(number == '4'):
-#            sound.play_off()
-#except KeyboardInterrupt:
-#    pass
