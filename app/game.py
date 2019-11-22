@@ -23,8 +23,8 @@ GPIO.output(23, GPIO.HIGH) # Rele 1 output
 GPIO.output(24, GPIO.HIGH) # Rele 2 output
 
 # Scoreboard
-GPIO.setup(6, GPIO.OUT)
-GPIO.setup(12, GPIO.OUT)
+GPIO.setup(6, GPIO.OUT) # Scoreboard Robot
+GPIO.setup(12, GPIO.OUT) # Scoreboard Player
 GPIO.output(6, GPIO.LOW)
 GPIO.output(12, GPIO.LOW)
 
