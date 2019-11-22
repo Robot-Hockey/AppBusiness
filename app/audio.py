@@ -3,14 +3,6 @@ import random
 import sys
 
 ROBOT_POINT_SOUNDS = [
-    'ai-ai',
-    'bambam-ajuda-o-maluco-ta-doente',
-    'bambam-bora-caralho',
-    'bambam-bora-cupadre',
-    'bambam-nao-eh-agua-com-musculo',
-    'bambam-nao-vai-dar',
-    'carreta-furacao',
-    'nao-teve-uma-boa-partida',
     'no-no-no-hahaha',
     'now-the-world-dont-move',
     'serjao-atirei-a-primeira',
@@ -20,7 +12,9 @@ ROBOT_POINT_SOUNDS = [
     'ta-sentindo-cansaco',
     'voar-nos-metros-finais',
     'e-agora-desliga',
-    'e-agora-pra-desligar-essa-merda-ai'
+    'e-agora-pra-desligar-essa-merda-ai',
+    'vergonha-da-profissao',
+    'cala-sua-boca'
 ]
 
 PLAYER_POINT_SOUNDS = [
@@ -38,7 +32,26 @@ PLAYER_POINT_SOUNDS = [
     'sweet-dreams-1',
     'sweet-dreams-2',
     'bambam-hora-do-show',
-    'vai-perder-vai-ganhar'
+    'vai-perder-vai-ganhar',
+    'ai-ai',
+    'bambam-ajuda-o-maluco-ta-doente',
+    'bambam-bora-caralho',
+    'bambam-bora-cupadre',
+    'bambam-nao-eh-agua-com-musculo',
+    'bambam-nao-vai-dar',
+    'carreta-furacao',
+    'nao-teve-uma-boa-partida',
+    'now-the-world-dont-move',
+    'serjao-atirei-a-primeira',
+    'serjao-mata-onca-mesmo',
+    'serjao-matador-de-onca',
+    'ta-pegando-fogo',
+    'ta-sentindo-cansaco',
+    'voar-nos-metros-finais',
+    'e-agora-desliga',
+    'e-agora-pra-desligar-essa-merda-ai',
+    'vergonha-da-profissao',
+    'cala-sua-boca'
 ]
 
 THEME_SOUNDS = [
