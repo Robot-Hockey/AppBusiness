@@ -1,6 +1,4 @@
-from distutils.core import setup, Extension
-
-module1 = Extension('spi', sources = ['spi.c'])
+from setuptools import setup, find_packages
 
 setup (
     name = 'AppBusiness',
@@ -11,5 +9,8 @@ setup (
     description = 'App to control business on the table.',
     license='GPL-v2',
     platforms=['Linux'],
-    ext_modules = [module1]
+    packages=find_packages(include=['app', 'app.*']),
+    entry_points={
+        'console_scripts': ['app-business=app.game:main']
+    }
 )
