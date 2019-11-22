@@ -77,7 +77,9 @@ The result should look something like the one below, indicating RFID communicati
 To use the RC522 module in Python we need to install some components before we can start programming. First we will install the python-dev package through the command:
 
 ```bash
-sudo apt-get install python-dev
+sudo apt install python3-dev python3-pip
+sudo pip3 install spidev
+sudo pip3 install mfrc522
 ```
 
 Once installed we will install the Python package for SPI communication, for this run the following commands:
