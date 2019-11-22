@@ -50,6 +50,7 @@ THEME_SOUNDS = [
 ]
 
 AUDIO_PATH = '../sounds/'
+AUDIO_FORMAT = '.ogg'
 
 VOLUME_LOW = 0.3
 VOLUME_HIGH = 1.0
@@ -59,7 +60,7 @@ class Audio:
 
     def __init__(self):
         mixer.init(44100, -16, 1, 1024)
-        self.bg_sound = mixer.music.load(AUDIO_PATH + THEME_SOUNDS[0] + '.ogg')
+        self.bg_sound = mixer.music.load(AUDIO_PATH + THEME_SOUNDS[0] + AUDIO_FORMAT)
 
     def play_background(self):  # Background music
         mixer.music.play(-1, 70.0)
@@ -71,11 +72,11 @@ class Audio:
         mixer.music.set_volume(VOLUME_HIGH)
 
     def play_robot_point(self): # Robot sound effects
-        sound = mixer.Sound(AUDIO_PATH + ROBOT_POINT_SOUNDS[random.randint(0, 15)] + '.ogg')
+        sound = mixer.Sound(AUDIO_PATH + ROBOT_POINT_SOUNDS[random.randint(0, len(ROBOT_POINT_SOUNDS))] + AUDIO_FORMAT)
         mixer.Channel(CHANNEL).play(sound)
         self.fade_sound_controller()
 
     def play_player_point(self): # Player sound effects
-        sound = mixer.Sound(AUDIO_PATH + PLAYER_POINT_SOUNDS[random.randint(0, 13)] + '.ogg')
+        sound = mixer.Sound(AUDIO_PATH + PLAYER_POINT_SOUNDS[random.randint(0, len(PLAYER_POINT_SOUNDS))] + AUDIO_FORMAT)
         mixer.Channel(CHANNEL).play(sound)
         self.fade_sound_controller()
