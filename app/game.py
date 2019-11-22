@@ -51,7 +51,7 @@ def send_scoreboard_point(robot):
 def game():
     score_player = 0
     score_robot = 0
-    game_max_score = 10
+    game_max_score = 3
     GPIO.output(23, GPIO.LOW) # Turn on air
     sound.play_background()
 
@@ -77,7 +77,7 @@ def game():
         while (GPIO.input(26) == GPIO.LOW):
             count_goal_1 += 1
  
-        if count_goal_1 > 700:
+        if count_goal_1 > 500:
             score_robot += 1
             print("Player: ", score_player)
             print("Robot: ", score_robot)
@@ -89,7 +89,7 @@ def game():
         while (GPIO.input(20) == GPIO.LOW):
             count_goal_2 += 1
         
-        if count_goal_2 > 700:
+        if count_goal_2 > 500:
             score_player += 1
             print("Player: ", score_player)
             print("Robot: ", score_robot)
