@@ -51,63 +51,70 @@ def send_scoreboard_point(robot):
 def game():
     score_player = 0
     score_robot = 0
-    game_max_score = 3
+    game_max_score = 10
     GPIO.output(23, GPIO.LOW) # Turn on air
     sound.play_background()
 
     while(True):
-        #input_goal_player = GPIO.input(26)
-        #input_goal_robot = GPIO.input(20)
-        #print(input_goal_player)
-        #print(input_goal_robot)
         input_goal_player = 0
         input_goal_robot = 0
 
-        count = 0
+        count_goal_1 = 0
         
         GPIO.setup(26, GPIO.OUT)
         GPIO.output(26, GPIO.LOW)
-        time.sleep(0.01)
+        #time.sleep(0.001)
         GPIO.setup(26, GPIO.IN)
+        
+        count_goal_2 = 0
+        
+        GPIO.setup(20, GPIO.OUT)
+        GPIO.output(20, GPIO.LOW)
+        #time.sleep(0.001)
+        GPIO.setup(20, GPIO.IN)
+
 
         while (GPIO.input(26) == GPIO.LOW):
-            count += 1
+            count_goal_1 += 1
+ 
+        if count_goal_1 > 700:
+            score_robot += 1
+            print("Player: ", score_player)
+            print("Robot: ", score_robot)
+            print(count_goal_1) 
+            print(count_goal_2) 
+            #send_scoreboard_point(True)
+            sound.play_robot_point()
 
+        while (GPIO.input(20) == GPIO.LOW):
+            count_goal_2 += 1
         
-        if count >= 10:
-            input_goal_robot = 1
+        if count_goal_2 > 700:
+            score_player += 1
+            print("Player: ", score_player)
+            print("Robot: ", score_robot)
+            print(count_goal_1) 
+            print(count_goal_2) 
+            #send_scoreboard_point(False)
+            sound.play_player_point()
+            
+        #os.system('clear')
         
-        #TODO: Code robot player goal
-
-        os.system('clear')
-        
-        if score_player >= 3:
+        if score_player >= game_max_score:
             print("Player Wins")
             GPIO.output(23, GPIO.HIGH) # Turn off air
             break
         
-        if score_robot >= 3:
+        if score_robot >= game_max_score:
             print("Robot Wins")
             GPIO.output(23, GPIO.HIGH) # Turn off air
             break
 
-        if input_goal_player == 1:
-            score_player += 1
-            sound.play_player_point()
-            #send_scoreboard_point(False)
-        elif input_goal_robot == 1:
-            score_robot += 1
-            sound.play_robot_point()
-            #send_scoreboard_point(True)
         
-        print("Player: ", score_player)
-        print("Robot: ", score_robot)
-        print(count) 
-     
+        
         """
         time.sleep(.3)
         """
-
 
 def main():
     api = Api()

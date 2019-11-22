@@ -45,9 +45,6 @@ THEME_SOUNDS = [
     'chapeleiro-disco-voador-original'
 ]
 
-THEME_SOUNDS = [
-    'chapeleiro-disco-voador-original'
-]
 
 AUDIO_PATH = '../sounds/'
 AUDIO_FORMAT = '.ogg'
@@ -72,11 +69,11 @@ class Audio:
         mixer.music.set_volume(VOLUME_HIGH)
 
     def play_robot_point(self): # Robot sound effects
-        sound = mixer.Sound(AUDIO_PATH + ROBOT_POINT_SOUNDS[random.randint(0, len(ROBOT_POINT_SOUNDS))] + AUDIO_FORMAT)
+        sound = mixer.Sound(AUDIO_PATH + ROBOT_POINT_SOUNDS[random.randint(0, len(ROBOT_POINT_SOUNDS)-1)] + AUDIO_FORMAT)
         mixer.Channel(CHANNEL).play(sound)
         self.fade_sound_controller()
 
     def play_player_point(self): # Player sound effects
-        sound = mixer.Sound(AUDIO_PATH + PLAYER_POINT_SOUNDS[random.randint(0, len(PLAYER_POINT_SOUNDS))] + AUDIO_FORMAT)
+        sound = mixer.Sound(AUDIO_PATH + PLAYER_POINT_SOUNDS[random.randint(0, len(PLAYER_POINT_SOUNDS)-1)] + AUDIO_FORMAT)
         mixer.Channel(CHANNEL).play(sound)
         self.fade_sound_controller()
