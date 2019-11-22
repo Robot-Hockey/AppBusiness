@@ -18,7 +18,9 @@ ROBOT_POINT_SOUNDS = [
     'serjao-matador-de-onca',
     'ta-pegando-fogo',
     'ta-sentindo-cansaco',
-    'voar-nos-metros-finais'
+    'voar-nos-metros-finais',
+    'e-agora-desliga',
+    'e-agora-pra-desligar-essa-merda-ai'
 ]
 
 PLAYER_POINT_SOUNDS = [
@@ -30,25 +32,17 @@ PLAYER_POINT_SOUNDS = [
     'bambam-uhhh-body-builder',
     'chama-o-bombeiro-la',
     'saiu-bem',
-    'serjao-berrante',
     'serjao-onca',
     'so-um-genio-pra-ganhar-essa-prova',
     'super-mario-bros-coin-sound-effect',
     'sweet-dreams-1',
-    'sweet-dreams-2'
-]
-
-ON_SOUNDS = [
-    'aperta-o-numero-1-liga',
+    'sweet-dreams-2',
     'bambam-hora-do-show',
-    'ja-tava-baum'
+    'vai-perder-vai-ganhar'
 ]
 
-OFF_SOUNDS = [
-    'e-agora-desliga',
-    'e-agora-pra-desligar-essa-merda-ai',
-    'nem-quem-ganhar-ou-perder',
-    'vai-perder-vai-ganhar'
+THEME_SOUNDS = [
+    'chapeleiro-disco-voador-original'
 ]
 
 THEME_SOUNDS = [
@@ -64,8 +58,6 @@ CHANNEL = 1
 class Audio:
 
     def __init__(self):
-        # mixer.pre_init(44100, 16, 1, 4096)
-        #mixer.init()
         mixer.init(44100, -16, 1, 1024)
         self.bg_sound = mixer.music.load(AUDIO_PATH + THEME_SOUNDS[0] + '.ogg')
 
@@ -85,15 +77,5 @@ class Audio:
 
     def play_player_point(self): # Player sound effects
         sound = mixer.Sound(AUDIO_PATH + PLAYER_POINT_SOUNDS[random.randint(0, 13)] + '.ogg')
-        mixer.Channel(CHANNEL).play(sound)
-        self.fade_sound_controller()
-
-    def play_on(self): # Table ON sound effects
-        sound = mixer.Sound(AUDIO_PATH + ON_SOUNDS[random.randint(0, 2)] + '.ogg')
-        mixer.Channel(CHANNEL).play(sound)
-        self.fade_sound_controller()
-
-    def play_off(self): # Table OFF sound effects
-        sound = mixer.Sound(AUDIO_PATH + OFF_SOUNDS[random.randint(0, 3)] + '.ogg')
         mixer.Channel(CHANNEL).play(sound)
         self.fade_sound_controller()
