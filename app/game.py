@@ -8,6 +8,7 @@ import time
 import os
 from audio import Audio
 from api  import Api
+import pygame
 
 GPIO.setwarnings(False)
 GPIO.setmode(GPIO.BCM)
@@ -36,6 +37,35 @@ ADMIN_CARDS = {
     '3C:2F:4F:0:2D': 'Admin 1',
 }
 
+pygame.init()
+screen = pygame.display.set_mode((1280, 720))
+pygame.display.set_caption("Disco Voador")
+pygame.display.toggle_fullscreen()
+
+def draw_text(surf, text, size, x, y):
+    font_name = pygame.font.match_font("arial")
+    font = pygame.font.Font(font_name, size)
+
+    text_surface = font.render(text, True, (255, 255, 255))
+
+    text_rect = text_surface.get_rect()
+
+    text_rect.midtop = (x, y)
+
+    surf.blit(text_surface, text_rect)
+
+def update_events():
+    ev = pygame.event.get()
+
+    for event in ev:
+        if event.type == pygame.KEYDOWN:
+            pygame.display.toggle_fullscreen()
+             
+
+def draw(text):
+    screen.fill((0, 0, 0))
+    draw_text(screen, text, 100, 640, 300)
+    pygame.display.update()
 
 def send_scoreboard_point(robot):
     if(robot):
@@ -53,9 +83,11 @@ def game():
     score_robot = 0
     game_max_score = 3
     GPIO.output(23, GPIO.LOW) # Turn on air
-    sound.play_background()
+    sound.play_background() 
 
     while(True):
+        update_events()
+        draw("{0} x {1}".format(score_player, score_robot))
         input_goal_player = 0
         input_goal_robot = 0
 
@@ -78,25 +110,27 @@ def game():
             count_goal_1 += 1
  
         if count_goal_1 > 500:
-            score_robot += 1
+            score_player += 1
+            draw("PLAYER SCORED!")
             print("Player: ", score_player)
             print("Robot: ", score_robot)
             print(count_goal_1) 
             print(count_goal_2) 
             #send_scoreboard_point(True)
-            sound.play_robot_point()
+            sound.play_player_point()
 
         while (GPIO.input(20) == GPIO.LOW):
             count_goal_2 += 1
         
         if count_goal_2 > 500:
-            score_player += 1
+            score_robot += 1
+            draw("ROBOT SCORED!")
             print("Player: ", score_player)
             print("Robot: ", score_robot)
             print(count_goal_1) 
             print(count_goal_2) 
             #send_scoreboard_point(False)
-            sound.play_player_point()
+            sound.play_robot_point()
             
         #os.system('clear')
         
@@ -117,18 +151,24 @@ def game():
         """
 
 def main():
+    draw("Welcome =)")
     api = Api()
+    draw("Initializing...")
     auth_token = api.login()
-
+    pygame.mouse.set_visible(False)
     try:
         while(True):
+            update_events()
+            draw("Bump your card")
             print('Show your card RFID')
             id, text = reader.read()
             print(hex(id))
+            draw("Verifying funds")
             result = api.debit(auth_token, hex(id))
             if result:
                 game()
             else:
+                draw("Not enough funds =(")
                 print("Error")
     except KeyboardInterrupt:
         pass
