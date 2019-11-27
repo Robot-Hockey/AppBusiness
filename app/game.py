@@ -40,7 +40,7 @@ ADMIN_CARDS = {
 pygame.init()
 screen = pygame.display.set_mode((1280, 720))
 pygame.display.set_caption("Disco Voador")
-pygame.display.toggle_fullscreen()
+# pygame.display.toggle_fullscreen()
 
 def draw_text(surf, text, size, x, y):
     font_name = pygame.font.match_font("arial")
@@ -81,13 +81,13 @@ def send_scoreboard_point(robot):
 def game():
     score_player = 0
     score_robot = 0
-    game_max_score = 3
+    game_max_score = 5
     GPIO.output(23, GPIO.LOW) # Turn on air
     sound.play_background() 
-
+    draw("{0} x {1}".format(score_player, score_robot))
     while(True):
-        update_events()
-        draw("{0} x {1}".format(score_player, score_robot))
+        #update_events()
+       
         input_goal_player = 0
         input_goal_robot = 0
 
@@ -108,7 +108,9 @@ def game():
 
         while (GPIO.input(26) == GPIO.LOW):
             count_goal_1 += 1
- 
+
+        # print(count_goal_1)
+
         if count_goal_1 > 500:
             score_player += 1
             draw("PLAYER SCORED!")
@@ -118,10 +120,15 @@ def game():
             print(count_goal_2) 
             #send_scoreboard_point(True)
             sound.play_player_point()
+            draw("{0} x {1}".format(score_player, score_robot))
 
         while (GPIO.input(20) == GPIO.LOW):
             count_goal_2 += 1
-        
+       
+        if count_goal_2 != 0:
+            print(count_goal_2)
+
+
         if count_goal_2 > 500:
             score_robot += 1
             draw("ROBOT SCORED!")
@@ -131,7 +138,7 @@ def game():
             print(count_goal_2) 
             #send_scoreboard_point(False)
             sound.play_robot_point()
-            
+            draw("{0} x {1}".format(score_player, score_robot))
         #os.system('clear')
         
         if score_player >= game_max_score:
@@ -169,6 +176,7 @@ def main():
                 game()
             else:
                 draw("Not enough funds =(")
+                time.sleep(5)
                 print("Error")
     except KeyboardInterrupt:
         pass
