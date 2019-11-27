@@ -40,7 +40,7 @@ ADMIN_CARDS = {
 pygame.init()
 screen = pygame.display.set_mode((1280, 720))
 pygame.display.set_caption("Disco Voador")
-# pygame.display.toggle_fullscreen()
+pygame.display.toggle_fullscreen()
 
 def draw_text(surf, text, size, x, y):
     font_name = pygame.font.match_font("arial")
@@ -120,6 +120,7 @@ def game():
             print(count_goal_2) 
             #send_scoreboard_point(True)
             sound.play_player_point()
+            update_events()
             draw("{0} x {1}".format(score_player, score_robot))
 
         while (GPIO.input(20) == GPIO.LOW):
@@ -138,6 +139,7 @@ def game():
             print(count_goal_2) 
             #send_scoreboard_point(False)
             sound.play_robot_point()
+            update_events()
             draw("{0} x {1}".format(score_player, score_robot))
         #os.system('clear')
         
