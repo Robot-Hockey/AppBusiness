@@ -10,6 +10,8 @@ from audio import Audio
 from api  import Api
 import pygame
 
+ONLINE_MODE = False
+
 GPIO.setwarnings(False)
 GPIO.setmode(GPIO.BCM)
 
@@ -161,9 +163,15 @@ def game():
 
 def main():
     draw("Welcome =)")
-    api = Api()
-    draw("Initializing...")
-    auth_token = api.login()
+    
+    if ONLINE_MODE:
+        api = Api()
+        draw("Initializing...")
+        auth_token = api.login()
+    else:
+        draw("Initializing...")
+        time.sleep(1)
+
     pygame.mouse.set_visible(False)
     try:
         while(True):
@@ -173,12 +181,19 @@ def main():
             id, text = reader.read()
             print(hex(id))
             draw("Verifying funds")
-            result = api.debit(auth_token, hex(id))
+            result = False
+
+            if ONLINE_MODE:
+                result = api.debit(auth_token, hex(id))
+            else:
+                time.sleep(1)
+                result = True
+
             if result:
                 game()
             else:
                 draw("Not enough funds =(")
-                time.sleep(5)
+                time.sleep(3)
                 print("Error")
     except KeyboardInterrupt:
         pass
