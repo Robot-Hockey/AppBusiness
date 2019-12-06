@@ -83,7 +83,7 @@ def send_scoreboard_point(robot):
 def game():
     score_player = 0
     score_robot = 0
-    game_max_score = 5
+    game_max_score = 2
     GPIO.output(23, GPIO.LOW) # Turn on air
     sound.play_background() 
     draw("{0} x {1}".format(score_player, score_robot))
